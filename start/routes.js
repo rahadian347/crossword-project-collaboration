@@ -25,7 +25,9 @@ Route.post('/auth/login', 'AuthController.login')
 
 
 Route.group(() => {
-
-
-
-}).prefix('api/v1')
+  Route.get('/','UserController.index')
+  Route.get('/:id', 'UserController.show')
+  Route.post('/', 'UserController.store')
+  Route.patch('/:id', 'UserController.update')
+  Route.delete('/:id', 'UserController.destroy')
+}).prefix('api/v1/users')
