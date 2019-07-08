@@ -29,6 +29,21 @@ Factory.blueprint('App/Models/Crossword', async (faker, i, data) => {
     }
 })
 
+Factory.blueprint('App/Models/Answer', async (faker, i, data) => {
+    return await {
+        number: [1,2,3,4,5][i],
+        question: ['Gempa 2018','Hampir menjadi ibu kota di era Soekarno','Pantai Sanur','Coto','Kota Kelahiran Icuk Sugiarto'][i],
+        answer: ['Palu', 'Palangkaraya', 'Denpasar', 'Makassar', 'Surakarta'][i],
+        is_clue: false,
+        indexes: ['[15,27,39,51]',
+                  '[37,38,39,40,41,42,43,44,45,46,47,48]',
+                  '[17,29,41,53,65,77,89,101]',
+                  '[73,74,75,76,77,78,79,80]',
+                  '[8,20,32,44,56,68,80,92,104]'][i]
+    }
+})
+
+
 // Factory.blueprint('App/Models/User', (faker) => {
 //   return {
 //     username: faker.username()
