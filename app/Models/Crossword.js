@@ -8,7 +8,7 @@ class Crossword extends Model {
         return this.hasMany('App/Models/Answers')
     }
     usercrosswords () {
-        return this.hasMany('App/Models/UserCrosswords')
+        return this.hasMany('App/Models/UserCrossword')
     }
 }
 

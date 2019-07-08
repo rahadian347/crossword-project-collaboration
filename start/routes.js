@@ -26,6 +26,9 @@ Route.post('/auth/login', 'AuthController.login')
 
 Route.group(() => {
 
+  Route.get('/crosswords','CrosswordController.index')
+  Route.get('/crosswords/:id/answer','UserAnswerController.index')
 
+  Route.post('/user_answer','UserAnswerController.store')
 
 }).prefix('api/v1')
