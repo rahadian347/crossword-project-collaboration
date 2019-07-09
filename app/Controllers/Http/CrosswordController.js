@@ -1,26 +1,21 @@
 'use strict'
 
+ const Crossword = use('App/Models/Crossword') 
+
 class CrosswordController {
-  async index ({ request, response, view }) {
+  async index ({ request, response }) {
+    try{
+      const userCrossword = await Crossword.query().with('usercrosswords', (builder) => {
+        builder.where('is_finished', 0).setVisible(['is_finished'])
+      }).fetch()
+      
+      return response.status(201).send({data:userCrossword})
+    }
+    catch(err){
+      return response.status(err.status).send(err)
+    }
   }
 
-  async create ({ request, response, view }) {
-  }
-
-  async store ({ request, response }) {
-  }
-
-  async show ({ params, request, response, view }) {
-  }
-
-  async edit ({ params, request, response, view }) {
-  }
-
-  async update ({ params, request, response }) {
-  }
-
-  async destroy ({ params, request, response }) {
-  }
 }
 
 module.exports = CrosswordController

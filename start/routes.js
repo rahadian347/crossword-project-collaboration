@@ -23,11 +23,19 @@ Route.get('/', () => {
 Route.post('/auth/register', 'AuthController.register')
 Route.post('/auth/login', 'AuthController.login')
 
+// Route.group(() => {
+//   Route.get('/','UserController.index')
+//   Route.get('/:id', 'UserController.show')
+//   Route.post('/', 'UserController.store')
+//   Route.patch('/:id', 'UserController.update')
+//   Route.delete('/:id', 'UserController.destroy')
+// }).prefix('/api/v1/users/')
 
 Route.group(() => {
-  Route.get('/','UserController.index')
-  Route.get('/:id', 'UserController.show')
-  Route.post('/', 'UserController.store')
-  Route.patch('/:id', 'UserController.update')
-  Route.delete('/:id', 'UserController.destroy')
-}).prefix('api/v1/users')
+
+  Route.get('/crosswords','CrosswordController.index')
+  Route.get('/crosswords/:id/answer','UserAnswerController.index')
+
+  Route.post('/user_answer','UserAnswerController.store')
+
+}).prefix('api/v1')
