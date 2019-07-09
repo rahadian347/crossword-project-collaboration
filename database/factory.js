@@ -25,13 +25,27 @@ Factory.blueprint('App/Models/User', async (faker, i, data) => {
 Factory.blueprint('App/Models/Crossword', async (faker, i, data) => {
     return {
         name: ['Nama-nama kota','Nama-nama makanan', 'Nama-nama nabi'][i],
-        total_columns: 144
+        total_columns: [144, 64, 25][i]
     }
 })
+
+// Factory.blueprint('App/Models/Answer', async (faker, i, data) => {
+//     return await {
+//         number: [1,2,3,4][i],
+//         question: ['Manusia Pertama','Diuji dengan sakit kulit','Membelah Laut Merah','Memiliki mukjizat menghidupkan orang mati'][i],
+//         answer: ['Adam', 'Ayub', 'Musa', 'Isa'][i],
+//         is_clue: false,
+//         indexes: ['0,1,2,3',
+//                   '0,5,10,15',
+//                   '3,8,13,18',
+//                   '12,13,14'][i]
+//     }
+// })
 
 Factory.blueprint('App/Models/Answer', async (faker, i, data) => {
     return await {
         number: [1,2,3,4,5][i],
+        type: ['menurun','mendatar','menurun','mendatar','menurun'][i],
         question: ['Gempa 2018','Hampir menjadi ibu kota di era Soekarno','Pantai Sanur','Coto','Kota Kelahiran Icuk Sugiarto'][i],
         answer: ['Palu', 'Palangkaraya', 'Denpasar', 'Makassar', 'Surakarta'][i],
         is_clue: false,
@@ -42,10 +56,3 @@ Factory.blueprint('App/Models/Answer', async (faker, i, data) => {
                   '7,19,31,43,55,67,79,91,103'][i]
     }
 })
-
-
-// Factory.blueprint('App/Models/User', (faker) => {
-//   return {
-//     username: faker.username()
-//   }
-// })

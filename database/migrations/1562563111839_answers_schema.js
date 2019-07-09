@@ -9,6 +9,7 @@ class AnswersSchema extends Schema {
       table.increments()
       table.integer('crossword_id').unsigned().references('id').inTable('crosswords')
       table.integer('number').unsigned()
+      table.enu('type', ['mendatar','menurun'])
       table.string('question', 80).notNullable()
       table.string('answer', 20).notNullable()
       table.boolean('is_clue').notNullable()

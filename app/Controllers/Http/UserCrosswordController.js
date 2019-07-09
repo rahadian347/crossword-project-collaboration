@@ -1,34 +1,25 @@
 'use strict'
 
-
+const Answer = use('App/Models/Answer')
+ 
 class UserCrosswordController {
- 
-  async index ({ request, response, view }) {
-  }
-
- 
-  async create ({ request, response, view }) {
-  }
-
- 
-  async store ({ request, response }) {
-  }
-
- 
-  async show ({ params, request, response, view }) {
-  }
-
-  
-  async edit ({ params, request, response, view }) {
-  }
-
- 
+   
   async update ({ params, request, response }) {
+    try{
+      // const answerExist = await Answer.query().where('is_clue',1).fetch()
+
+      const answerExists = await Answer.findBy('is_clue', 1)
+      if (answerExists) {
+         console.log('err')
+      }
+
+
+    }
+    catch(e){
+      console.log(e)
+    }  
   }
 
- 
-  async destroy ({ params, request, response }) {
-  }
 }
 
 module.exports = UserCrosswordController
