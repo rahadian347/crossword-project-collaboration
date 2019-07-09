@@ -22,10 +22,11 @@ Route.get('/', () => {
 
 Route.post('/auth/register', 'AuthController.register')
 Route.post('/auth/login', 'AuthController.login')
-
+Route.get('/submit_crossword/:crossword_id/:user_id','AnswerController.show').middleware(['CheckAnswer'])
 
 Route.group(() => {
-
+  
+  Route.post('/submit', 'AuthController.login')
 
 
 }).prefix('api/v1')

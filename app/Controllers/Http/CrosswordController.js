@@ -1,5 +1,5 @@
 'use strict'
-
+const Crossword=use('App/Models/Crossword')
 class CrosswordController {
   async index ({ request, response, view }) {
   }
@@ -8,9 +8,11 @@ class CrosswordController {
   }
 
   async store ({ request, response }) {
+    
   }
 
   async show ({ params, request, response, view }) {
+    
   }
 
   async edit ({ params, request, response, view }) {

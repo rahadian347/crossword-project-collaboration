@@ -1,9 +1,6 @@
 'use strict'
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
+const UserAnswer=use('App/Models/UserAnswer')
 /**
  * Resourceful controller for interacting with useranswers
  */
@@ -41,8 +38,11 @@ class UserAnswerController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    response.json('test gan')
   }
 
+
+z
   /**
    * Display a single useranswer.
    * GET useranswers/:id
@@ -52,8 +52,12 @@ class UserAnswerController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
-  }
+  // async show ({ params, request, response, view }) {
+  //   const checkAnswer=await Crossword.query().where('').with('answers',builder => {
+  //     builder.innerJoin('user_answers','answer','user_answers.answer')
+  //   }).fetch()
+  //   if (checkAnswer)
+  // }
 
   /**
    * Render a form to update an existing useranswer.
