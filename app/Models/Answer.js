@@ -5,10 +5,10 @@ const Model = use('Model')
 
 class Answer extends Model {
     crosswords () {
-        return this.belongsTo('App/Models/Crosswords')
+        return this.belongsTo('App/Models/Crossword')
     }
-    useranswers () {
-        return this.hasMany('App/Models/UserAnswers')
+    userAnswers () {
+        return this.hasMany('App/Models/UserAnswer')
     }
 }
 
