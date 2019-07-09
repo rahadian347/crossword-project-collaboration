@@ -30,5 +30,7 @@ Route.group(() => {
   Route.get('/crosswords/:id/answer','UserAnswerController.index')
 
   Route.post('/user_answer','UserAnswerController.store')
+  Route.patch('/user_answer/:id','UserAnswerController.update')
+
 
 }).prefix('api/v1')
