@@ -28,10 +28,6 @@ class UserAnswerController {
     })
    
   }
-
-  async update ({request, response}){
-    
-  }
 }
 
 module.exports = UserAnswerController

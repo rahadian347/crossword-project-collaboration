@@ -6,6 +6,7 @@ class AuthController {
 
     async register({ request, response }) {
         const data = request.only(['username', 'email', 'password'])
+        console.log(data)
         try {
             //looking for user in database
             const userExists = await User.findBy('email', data.email)
