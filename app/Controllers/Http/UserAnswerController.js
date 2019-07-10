@@ -10,7 +10,7 @@ class UserAnswerController {
       try{
         const answer = await Answer.query().where('crossword_id', params.id).fetch()
 
-        return response.status(201).send({data:answer})
+        return response.status(200).send({data:answer})
       }
       catch(error){
          return response.send(error)
@@ -19,17 +19,13 @@ class UserAnswerController {
   }
 
   async store ({ request, response }){
-    const data = request.only(['user_id','answer_id','answer'])
+    let data = request.collect(['user_id', 'answer_id', 'answer'])
 
-    const useranswer = await UserAnswer.create(data)
+    const useranswer = await UserAnswer.createMany(data)
     
-    return response.status(200).json({
+    return response.status(201).json({
         message: 'success',
-        data: {
-          'user_id': useranswer.user_id,
-          'answer_id': useranswer.answer_id,
-          'answer': useranswer.answer
-       }
+        data: useranswer
     })
    
   }
