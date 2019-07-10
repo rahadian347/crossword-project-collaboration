@@ -33,7 +33,7 @@ Factory.blueprint('App/Models/Crossword', async (faker, i, data) => {
 //     return await {
 //         number: [1,2,3,4][i],
 //         question: ['Manusia Pertama','Diuji dengan sakit kulit','Membelah Laut Merah','Memiliki mukjizat menghidupkan orang mati'][i],
-//         answer: ['Adam', 'Ayub', 'Musa', 'Isa'][i],
+//         answer: ['ADAM', 'AYUB', 'MUSA', 'ISA'][i],
 //         is_clue: false,
 //         indexes: ['0,1,2,3',
 //                   '0,5,10,15',
@@ -47,7 +47,7 @@ Factory.blueprint('App/Models/Answer', async (faker, i, data) => {
         number: [1,2,3,4,5][i],
         type: ['menurun','mendatar','menurun','mendatar','menurun'][i],
         question: ['Gempa 2018','Hampir menjadi ibu kota di era Soekarno','Pantai Sanur','Coto','Kota Kelahiran Icuk Sugiarto'][i],
-        answer: ['Palu', 'Palangkaraya', 'Denpasar', 'Makassar', 'Surakarta'][i],
+        answer: ['PALU', 'PALANGKARAYA', 'DENPASAR', 'MAKASSAR', 'SURAKARTA'][i],
         is_clue: false,
         indexes: ['14,26,38,50',
                   '36,37,38,39,40,41,42,43,44,45,46,47',
