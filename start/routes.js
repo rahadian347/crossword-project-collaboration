@@ -16,10 +16,6 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
-
 Route.post('/auth/register', 'AuthController.register')
 Route.post('/auth/login', 'AuthController.login')
 
@@ -29,7 +25,7 @@ Route.group(() => {
   Route.post('/', 'UserController.store')
   Route.patch('/:id', 'UserController.update')
   Route.delete('/:id', 'UserController.destroy')
-}).prefix('/api/v1/users/')
+}).prefix('/api/v1/users/').middleware(['auth:jwt'])
 
 Route.group(() => {
 
