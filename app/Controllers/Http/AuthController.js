@@ -1,19 +1,40 @@
 'use strict'
 
 const User = use('App/Models/User')
+const Crossword = use('App/Models/Crossword')
+const Database = use('Database')
 
 class AuthController {
 
     async register({ request, response }) {
         const data = request.only(['username', 'email', 'password'])
-        console.log(data)
+        const {confirm_password} = request.post()
         try {
             //looking for user in database
             const userExists = await User.findBy('email', data.email)
             if (userExists) {
                 return response.status(400).send({ message: { error: 'User already registered' } })
             }
+            if(data.password !== confirm_password){
+                return response.status(400).send({ message: { error: 'Password don\'t match'} })
+            }
             const user = await User.create(data)
+
+            //auto add pivot user_crosswords when registered
+            const crosswords = await Crossword.all()
+
+            for (let i in crosswords.rows) {
+
+                const crossword = await crosswords.rows[i]
+                
+             await user.crosswords().attach([crossword.id], (row)=> {
+                row.is_finished = 0
+             })
+            }         
+           
+
+            
+
             return response.status(201).json({
                 'message': 'success',
                 'data': {
@@ -22,6 +43,7 @@ class AuthController {
                 }
             })
         } catch (err) {
+            console.log(err)
             return response.status(err.status).send(err)
         }
     }

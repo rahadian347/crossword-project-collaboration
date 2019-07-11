@@ -33,7 +33,7 @@ Route.group(() => {
 
 Route.group(() => {
 
-  Route.get('/crosswords','CrosswordController.index')
+  Route.get('/crosswords/:id','CrosswordController.index')
   Route.get('/crosswords/:id/answer','UserAnswerController.index')
 
   Route.post('/user_answer','UserAnswerController.store')

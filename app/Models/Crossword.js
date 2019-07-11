@@ -10,6 +10,10 @@ class Crossword extends Model {
     usercrosswords () {
         return this.hasMany('App/Models/UserCrossword')
     }
+
+    users() {
+    	return this.belongsToMany('App/Models/User').pivotTable('user_crosswords')
+    }
 }
 
 module.exports = Crossword
