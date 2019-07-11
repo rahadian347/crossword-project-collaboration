@@ -33,7 +33,7 @@ Route.group(() => {
 
 Route.group(() => {
 
-  Route.get('/crosswords/:id','CrosswordController.index')
+  Route.get('/crosswords/','CrosswordController.index')
   Route.get('/crosswords/:id/answer','UserAnswerController.index')
 
   Route.post('/user_answer','UserAnswerController.store')
@@ -41,4 +41,4 @@ Route.group(() => {
 
   Route.patch('/user_crossword/:crossword_id/:user_id','AnswerController.show').middleware(['CheckAnswer'])
 
-}).prefix('api/v1')
+}).prefix('api/v1').middleware(['auth:jwt'])
