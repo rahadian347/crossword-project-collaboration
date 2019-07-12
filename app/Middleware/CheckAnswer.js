@@ -10,19 +10,23 @@ class CheckAnswer {
    * @param {Function} next
    */
   async handle ({ request,params,response }, next) {
+
     const {crossword_id,user_id}=params
     try{
-      const data=await Answer.query().where('crossword_id',crossword_id).with('userAnswers',builder => {
-        builder.where('user_id',user_id).setHidden(['created_at','updated_at'])
-      }).setHidden(['created_at','updated_at','is_clue']).fetch()
+      const data=await Answer.query().where('crossword_id',crossword_id)
+                      // .with('userAnswers',(builder)=> {
+                      //   builder.where({crossword_id,user_id}).setHidden(['created_at','updated_at'])
+                      // })
+                      .setHidden(['created_at','updated_at','is_clue']).fetch()
 
       if(data.toJSON().length === 0){
-        request.data=data
-        await next()
-      }else{
         response.status(404).json({
           msg:'data tidak ditemukan'
         })
+      }else{
+        // response.json(data)
+        request.data=data
+        await next()
       }
     }
     catch(err){

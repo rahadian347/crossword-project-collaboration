@@ -36,9 +36,10 @@ Route.group(() => {
   Route.get('/crosswords','CrosswordController.index')
   Route.get('/crosswords/:id/answer','UserAnswerController.index')
 
+  Route.get('/user_answers/:user_id','UserAnswerController.index')
   Route.post('/user_answer','UserAnswerController.store')
   Route.patch('/user_answer/:id','UserAnswerController.update')
-
+  Route.get('/answers/:crossword_id','AnswerController.index')
   Route.patch('/user_crossword/:crossword_id/:user_id','AnswerController.show').middleware(['CheckAnswer'])
 
 

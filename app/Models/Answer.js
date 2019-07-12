@@ -8,7 +8,7 @@ class Answer extends Model {
         return this.belongsTo('App/Models/Crossword')
     }
     userAnswers () {
-        return this.hasMany('App/Models/UserAnswer')
+        return this.hasMany('App/Models/UserAnswer','id','answer_id')
     }
 }
 

@@ -10,6 +10,7 @@ class UserAnswer extends Model {
     users () {
         return this.belongsTo('App/Models/User')
     }
+
 }
 
 module.exports = UserAnswer
