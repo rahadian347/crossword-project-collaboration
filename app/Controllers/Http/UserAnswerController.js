@@ -12,7 +12,7 @@ class UserAnswerController {
         const answer = await UserAnswer.query().where('user_id', user_id)
                             .setHidden(['created_at','updated_at'])
                             .with('answers',builder => {
-                              builder.setVisible(['indexes'])
+                              builder.setVisible(['indexes']).with('crosswords')
                             })
                             .fetch()
         return response.status(200).send({data:answer})

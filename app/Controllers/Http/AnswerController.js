@@ -8,6 +8,7 @@ class AnswerController {
     const {crossword_id}=params
     try{
       const getAll= await Answer.query().where({crossword_id})
+                          .with('crosswords')
                           .setHidden(['created_at','updated_at'])
                           .fetch()
 
@@ -36,17 +37,20 @@ class AnswerController {
 
   async show ({ params, request, response, view }) {
     const data=await request.data.toJSON()
+    // const crossswordName=await request.crossswordName.toJSON()
     const body=request.post()
     let wrong=[]
     const {crossword_id,user_id}=params
 
-    //generate kunci jawaban
     let word
     let answerIndex
     let a=[]
     let numbers
     let indexes=[]
+
     console.log('ini awal')
+    
+    //generate kunci jawaban
     data.map((item,mainIndex)=> {
         console.log('ini mapp')
         word=item.answer.split("")
@@ -73,7 +77,9 @@ class AnswerController {
         }
     })
 
+
     if(hh.length === a.length){
+        const apa=await UserCrossword.query().where({crossword_id,user_id}).update({is_finished:1})
         response.json('benar semua')
     }else {
         response.json({
@@ -81,25 +87,33 @@ class AnswerController {
             data:wrong
         })
     } 
-    
+
+  // let numm=[]
+  // let item=mainData
+  // let dataFinal=[]
+  // let selectNum=item.filter((data,index)=> {
+  //   if(numm.includes(data.number)){
+  //     numm.push(data.number)
+  //   }
+  // })
+  // let finalData=selectNum.filter((data,index)=> {
+  //   item.filter((child,index)=> {
+  //     if(data.number === child.number)
+  //       word.push(child.val)
+  //   })
+  //   dataFinal.push({answer:word,answer_id:data.answer_id})
+  //   word=[]
+  // })
+
+  // data.map(data => {
+  //   const update=await userAnswers.query().insert({answer_id,user_id,answer:finalData})  
+  // })
+  
+
+  // const update=userAnswers.query().whereNot({answer_id,user_id,answer})
 
 
-    // for (let index = 0; index < data.length; index++) {
-    //   if(data[index].userAnswers[0].answer != data[index].answer){
-    //     wrong.push(data[index])
-    //   }
-    // }
-    // if(wrong.length > 0){
-    //   response.status(200).json({
-    //     msg:'Masih Ada Yang Salah :(',
-    //     data:wrong
-    //   })
-    // }else {
-    //   const apa=await UserCrossword.query().where({crossword_id,user_id}).update({is_finished:1})
-    //   response.status(200).json({
-    //     msg:"Yeay Benar Semuasda!",
-    //   }) 
-    // }
+
   }
 
   async edit ({ params, request, response, view }) {

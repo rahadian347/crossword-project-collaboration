@@ -14,6 +14,9 @@ class CheckAnswer {
     const {crossword_id,user_id}=params
     try{
       const data=await Answer.query().where('crossword_id',crossword_id)
+                      .with('crosswords',builder => {
+                        builder.setVisible(['name'])
+                      })
                       // .with('userAnswers',(builder)=> {
                       //   builder.where({crossword_id,user_id}).setHidden(['created_at','updated_at'])
                       // })
@@ -26,6 +29,7 @@ class CheckAnswer {
       }else{
         // response.json(data)
         request.data=data
+        request.crossswordName=data[0].crosswords.name
         await next()
       }
     }
