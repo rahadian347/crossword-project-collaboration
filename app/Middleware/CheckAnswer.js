@@ -16,11 +16,7 @@ class CheckAnswer {
       const data=await Answer.query().where('crossword_id',crossword_id)
                       .with('crosswords',builder => {
                         builder.setVisible(['name'])
-                      })
-                      // .with('userAnswers',(builder)=> {
-                      //   builder.where({crossword_id,user_id}).setHidden(['created_at','updated_at'])
-                      // })
-                      .setHidden(['created_at','updated_at','is_clue']).fetch()
+                      }).setHidden(['created_at','updated_at','is_clue']).fetch()
 
       if(data.toJSON().length === 0){
         response.status(404).json({
@@ -29,7 +25,7 @@ class CheckAnswer {
       }else{
         // response.json(data)
         request.data=data
-        request.crossswordName=data[0].crosswords.name
+        // request.crossswordName=data[0].crosswords.name
         await next()
       }
     }

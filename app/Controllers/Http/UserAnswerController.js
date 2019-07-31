@@ -2,14 +2,14 @@
 
 const Answer = use('App/Models/Answer')
 const UserAnswer = use('App/Models/UserAnswer')
-
+const Database=use('Database')
 class UserAnswerController {
 
   async index ({ request, response, params }) {
     response.json('asdasdadads')
     const {user_id}=params
       try{
-        const answer = await UserAnswer.query().where('user_id', user_id)
+        const answer = await UserAnswer.query().where({user_id})
                             .setHidden(['created_at','updated_at'])
                             .with('answers',builder => {
                               builder.setVisible(['indexes']).with('crosswords')
@@ -23,67 +23,66 @@ class UserAnswerController {
           
   }
 
-  async store ({ request, response }){
-    response.json('asdasdadads')
-    // let data = request.collect(['user_id', 'answer_id', 'answer'])
-  //   let data=request.post()
-  // const {user_id,answer,answer_id}=data
-  //   // response.status(200).json(
-  //   //   {
-  //   //     msg:'success',
-  //   //     data
-  //   //   }
-  //   // ) 
-  //   try{
-  //   const checkUserAnswer= await UserAnswer.query().update('answer','wakwaw')   
-  //     // const oldUserAnswer=new UserAnswer()
-  //     // oldUserAnswer.user_id=user_id
-  //     // oldUserAnswer.answer=answer
-  //     // oldUserAnswer.answer_id=answer_id
+  async store ({ request, response,params}){
+    const {user_id}=params
+    let body=request.post()
+    let numm=[]
+    let words=[]
+    let item=body.data
+    item.sort((a,b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
+    let dataFinal=[]
 
-  //     // const saveUserAnswer=await oldUserAnswer.save()
-  //     if(checkUserAnswer){
-  //       response.status(200).json(
-  //         {
-  //           msg:'success',
-  //           data
-  //         }
-  //       ) 
-  //     }else{
-  //       // const answer=await UserAnswer.create(data)
-  //       response.status(200).json({
-  //         msg:'sukses',
-  //         answer,
-  //         data
-  //       })
-  //     }
-  //   }catch(e){
-  //     console.log(e)
-  //     return e
-  //   }
-
-    
-  //   // return response.status(201).json({
-  //   //     message: 'success',
-  //   //     data: useranswer
-  //   // })
-   
-  }
-
-  async update ({request, response, params}){
-    const data = request.only(['user_id','answer_id','answer'])
-
-    const useranswer = await UserAnswer.query().where('id',params.id).update(data)
-
-    return response.status(200).json({
-      message: 'success',
-      data: {
-        'user_id': data.user_id,
-        'answer_id': data.answer_id,
-        'answer': data.answer
-     }
+    item.map((data,index)=> {
+      if(!numm.includes(data.answerId)){
+        numm.push(data.answerId)
+      }
     })
+
+    numm.map((data,index)=> {
+      item.map((child,index)=> {
+        if(data === child.answerId)
+          words.push(child.data)
+      })
+      dataFinal.push({answer:words.toString().replace(/,/g,''),answer_id:data})
+      words=[]
+    })
+
+    try {
+      const userAnswers= await UserAnswer.query().fetch()
+      dataFinal.map(async(data,index) => {
+        let {answer,answer_id}=data
+        let result= userAnswers.toJSON().filter((ansData,ansIndex) => {
+          if(data.answer_id === ansData.answer_id){
+            return true
+          }
+        })
+        if(result.length > 0){
+          let updateAnswer=await Database.table('user_answers').where({answer_id:data.answer_id,user_id}).update('answer',data.answer)
+          console.log('updated gan')
+        
+        }else {
+          let updateAnswer=await UserAnswer.create({
+            answer,
+            user_id,
+            answer_id
+          }) 
+          console.log('inserted gan')
+        }
+      })
+
+      response.status(201).json({
+        msg:'succes update'
+      })
+
+    }catch(e){
+      return e
+    }
+
+
   }
+
+  // if()/*/
+  
 }
 
 module.exports = UserAnswerController

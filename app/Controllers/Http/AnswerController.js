@@ -2,7 +2,8 @@
 
 const UserCrossword=use('App/Models/UserCrossword')
 const Answer=use('App/Models/Answer')
-
+const UserAnswer=use('App/Models/UserAnswer')
+const Database=use('Database')
 class AnswerController {
   async index ({ request,params, response, view }) {
     const {crossword_id}=params
@@ -25,8 +26,6 @@ class AnswerController {
     }catch(e){
       response.status(404).json({msg:'mau ngapain sih?'})
     }
-
-
   }
 
   async create ({ request, response, view }) {
@@ -36,22 +35,22 @@ class AnswerController {
   }
 
   async show ({ params, request, response, view }) {
-    const data=await request.data.toJSON()
+    const answers=await request.data.toJSON()
     // const crossswordName=await request.crossswordName.toJSON()
     const body=request.post()
     let wrong=[]
     const {crossword_id,user_id}=params
-
     let word
     let answerIndex
     let a=[]
     let numbers
     let indexes=[]
+    const userAnswers= await UserAnswer.query().fetch()
 
     console.log('ini awal')
     
-    //generate kunci jawaban
-    data.map((item,mainIndex)=> {
+    // generate kunci jawaban
+    answers.map((item,mainIndex)=> {
         console.log('ini mapp')
         word=item.answer.split("")
         answerIndex=item.indexes.split(",")
@@ -76,45 +75,66 @@ class AnswerController {
             wrong.push(index)
         }
     })
+    
+    //update db
+    let numm=[]
+    let words=[]
+    let item=body.data
+    item.sort((a,b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
+    let dataFinal=[]
+    let aaf=item.filter((data,index)=> {
+      if(!numm.includes(data.answerId)){
+        numm.push(data.answerId)
+      }
+    })
+    numm.map((data,index)=> {
+      item.filter((child,index)=> {
+        if(data === child.answerId)
+          words.push(child.data)
+      })
+      dataFinal.push({answer:words.toString().replace(/,/g,''),answer_id:data})
+      words=[]
+    })
 
+    let ppp=[]
+    let ooo=dataFinal.filter(async(data,index) => {
+      let {answer,answer_id}=data
+      let result= userAnswers.toJSON().filter((ansData,ansIndex) => {
+        if(data.answer_id === ansData.answer_id){
+          return true
+        }
+      })
+      if(result.length > 0){
+        let updateAnswer=await Database.table('user_answers').where({answer_id:data.answer_id,user_id}).update('answer',data.answer)
+      
+      }else {
+        let updateAnswer=await UserAnswer.create({
+          answer,
+          user_id,
+          answer_id
+        }) 
+      }
+    })
 
+    //create resp
     if(hh.length === a.length){
-        const apa=await UserCrossword.query().where({crossword_id,user_id}).update({is_finished:1})
-        response.json('benar semua')
+      const apa=await UserCrossword.query().where({crossword_id,user_id}).update({is_finished:1})
+      response.json({
+        msg:'benar semua',
+        isFinished:true
+      })
     }else {
-        response.json({
-            msg:'salah',
-            data:wrong
-        })
+      response.json({
+          msg:'salah',
+          data:wrong,
+          isFinished:false
+      })
     } 
-
-  // let numm=[]
-  // let item=mainData
-  // let dataFinal=[]
-  // let selectNum=item.filter((data,index)=> {
-  //   if(numm.includes(data.number)){
-  //     numm.push(data.number)
-  //   }
-  // })
-  // let finalData=selectNum.filter((data,index)=> {
-  //   item.filter((child,index)=> {
-  //     if(data.number === child.number)
-  //       word.push(child.val)
-  //   })
-  //   dataFinal.push({answer:word,answer_id:data.answer_id})
-  //   word=[]
-  // })
-
-  // data.map(data => {
-  //   const update=await userAnswers.query().insert({answer_id,user_id,answer:finalData})  
-  // })
-  
-
-  // const update=userAnswers.query().whereNot({answer_id,user_id,answer})
-
-
-
   }
+
+
+
+  
 
   async edit ({ params, request, response, view }) {
   }
